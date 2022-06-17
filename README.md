@@ -8,7 +8,7 @@ Just a little Studio extension that allows users to pick and set colors within S
 ### Examples
 
 ![Color Picker](docs/images/Colorpicker.png)
-![Color Picker in Action](docs/images/ColorpickerInAction.png)
+![Color Picker in Action](docs/images/ColorPickerInAction.png)
 
 ### Installation
 
