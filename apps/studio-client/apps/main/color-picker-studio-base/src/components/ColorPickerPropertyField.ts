@@ -2,11 +2,13 @@ import ContentPropertyNames from "@coremedia/studio-client.cap-rest-client/conte
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import AdvancedFieldContainer from "@coremedia/studio-client.ext.ui-components/components/AdvancedFieldContainer";
 import BindPropertyPlugin from "@coremedia/studio-client.ext.ui-components/plugins/BindPropertyPlugin";
+import ButtonSkin from "@coremedia/studio-client.ext.ui-components/skins/ButtonSkin";
 import PropertyFieldPlugin from "@coremedia/studio-client.main.editor-components/sdk/premular/PropertyFieldPlugin";
 import BindReadOnlyPlugin
   from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/BindReadOnlyPlugin";
 import SetPropertyLabelPlugin
   from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/SetPropertyLabelPlugin";
+import Button from "@jangaroo/ext-ts/button/Button";
 import DisplayField from "@jangaroo/ext-ts/form/field/Display";
 import TextField from "@jangaroo/ext-ts/form/field/Text";
 import ColumnLayout from "@jangaroo/ext-ts/layout/container/Column";
@@ -15,7 +17,6 @@ import Config from "@jangaroo/runtime/Config";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
 import ColorPicker_properties from "../ColorPicker_properties";
 import ColorInputField from "./ColorInputField";
-import TextLinkButton from "./TextLinkButton";
 
 interface ColorPickerPropertyFieldConfig extends Config<AdvancedFieldContainer>, Partial<Pick<ColorPickerPropertyField,
   "bindTo" |
@@ -60,11 +61,13 @@ class ColorPickerPropertyField extends AdvancedFieldContainer {
             }),
           ],
         }),
-        Config(TextLinkButton, {
+        Config(Button, {
           text: ColorPicker_properties.ColorPickerPropertyField_reset_text,
           handler: bind(this, () => {
             this.#resetColor();
           }),
+          scale: "small",
+          ui: ButtonSkin.SIMPLE.getSkin(),
         }),
       ],
       plugins: [
