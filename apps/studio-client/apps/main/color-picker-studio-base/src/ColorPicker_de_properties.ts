@@ -5,4 +5,4 @@ import ColorPicker_properties from "./ColorPicker_properties";
  * Overrides of ResourceBundle "ColorPicker" for Locale "de".
  * @see ColorPicker_properties#INSTANCE
  */
-ResourceBundleUtil.override(ColorPicker_properties, { });
+ResourceBundleUtil.override(ColorPicker_properties, {});

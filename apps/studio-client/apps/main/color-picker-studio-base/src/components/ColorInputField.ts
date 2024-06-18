@@ -6,14 +6,11 @@ import { as, bind } from "@jangaroo/runtime";
 import Config from "@jangaroo/runtime/Config";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
 
-interface ColorInputFieldConfig extends Config<BaseField>, Partial<Pick<ColorInputField,
-  "bindTo" |
-  "propertyName" |
-  "initialColor"
->> {}
+interface ColorInputFieldConfig
+  extends Config<BaseField>,
+    Partial<Pick<ColorInputField, "bindTo" | "propertyName" | "initialColor">> {}
 
 class ColorInputField extends BaseField {
-
   declare Config: ColorInputFieldConfig;
 
   #colorInput: HTMLInputElement;
@@ -67,7 +64,6 @@ class ColorInputField extends BaseField {
   propertyName: string = null;
 
   initialColor: string = null;
-
 }
 
 export default ColorInputField;
