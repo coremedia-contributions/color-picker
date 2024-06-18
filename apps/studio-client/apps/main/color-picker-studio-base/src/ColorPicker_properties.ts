@@ -3,7 +3,7 @@
  * @see ColorPicker_properties#INSTANCE
  */
 interface ColorPicker_properties {
-  ColorPickerPropertyField_reset_text: string
+  ColorPickerPropertyField_reset_text: string;
 }
 
 /**

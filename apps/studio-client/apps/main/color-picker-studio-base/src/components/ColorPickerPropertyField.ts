@@ -2,11 +2,11 @@ import ContentPropertyNames from "@coremedia/studio-client.cap-rest-client/conte
 import ValueExpression from "@coremedia/studio-client.client-core/data/ValueExpression";
 import AdvancedFieldContainer from "@coremedia/studio-client.ext.ui-components/components/AdvancedFieldContainer";
 import BindPropertyPlugin from "@coremedia/studio-client.ext.ui-components/plugins/BindPropertyPlugin";
+import ButtonSkin from "@coremedia/studio-client.ext.ui-components/skins/ButtonSkin";
 import PropertyFieldPlugin from "@coremedia/studio-client.main.editor-components/sdk/premular/PropertyFieldPlugin";
-import BindReadOnlyPlugin
-  from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/BindReadOnlyPlugin";
-import SetPropertyLabelPlugin
-  from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/SetPropertyLabelPlugin";
+import BindReadOnlyPlugin from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/BindReadOnlyPlugin";
+import SetPropertyLabelPlugin from "@coremedia/studio-client.main.editor-components/sdk/premular/fields/plugins/SetPropertyLabelPlugin";
+import Button from "@jangaroo/ext-ts/button/Button";
 import DisplayField from "@jangaroo/ext-ts/form/field/Display";
 import TextField from "@jangaroo/ext-ts/form/field/Text";
 import ColumnLayout from "@jangaroo/ext-ts/layout/container/Column";
@@ -15,71 +15,82 @@ import Config from "@jangaroo/runtime/Config";
 import ConfigUtils from "@jangaroo/runtime/ConfigUtils";
 import ColorPicker_properties from "../ColorPicker_properties";
 import ColorInputField from "./ColorInputField";
-import TextLinkButton from "./TextLinkButton";
 
-interface ColorPickerPropertyFieldConfig extends Config<AdvancedFieldContainer>, Partial<Pick<ColorPickerPropertyField,
-  "bindTo" |
-  "forceReadOnlyValueExpression" |
-  "propertyName" |
-  "hideIssues" |
-  "initialColor" |
-  "textFieldHidden" |
-  "displayFieldHidden"
->> {}
+interface ColorPickerPropertyFieldConfig
+  extends Config<AdvancedFieldContainer>,
+    Partial<
+      Pick<
+        ColorPickerPropertyField,
+        | "bindTo"
+        | "forceReadOnlyValueExpression"
+        | "propertyName"
+        | "hideIssues"
+        | "initialColor"
+        | "textFieldHidden"
+        | "displayFieldHidden"
+      >
+    > {}
 
 class ColorPickerPropertyField extends AdvancedFieldContainer {
-
   declare Config: ColorPickerPropertyFieldConfig;
 
   constructor(config: Config<ColorPickerPropertyField> = null) {
-    super((() => ConfigUtils.apply(Config(ColorPickerPropertyField, {
-      items: [
-        Config(ColorInputField, {
-          bindTo: config.bindTo,
-          propertyName: config.propertyName,
-          initialColor: config.initialColor,
-        }),
-        Config(TextField, {
-          margin: "0 6",
-          hidden: config.textFieldHidden,
-          plugins: [
-            Config(BindPropertyPlugin, {
-              bindTo: config.bindTo.extendBy(ContentPropertyNames.PROPERTIES, config.propertyName),
-              bidirectional: true,
-              ifUndefined: config.initialColor,
-            }),
-          ],
-        }),
-        Config(DisplayField, {
-          margin: "0 6",
-          hidden: ColorPickerPropertyField.#calculateDisplayFieldHidden(config),
-          plugins: [
-            Config(BindPropertyPlugin, {
-              bindTo: config.bindTo.extendBy(ContentPropertyNames.PROPERTIES, config.propertyName),
-              ifUndefined: config.initialColor,
-            }),
-          ],
-        }),
-        Config(TextLinkButton, {
-          text: ColorPicker_properties.ColorPickerPropertyField_reset_text,
-          handler: bind(this, () => {
-            this.#resetColor();
+    super(
+      (() =>
+        ConfigUtils.apply(
+          Config(ColorPickerPropertyField, {
+            items: [
+              Config(ColorInputField, {
+                bindTo: config.bindTo,
+                propertyName: config.propertyName,
+                initialColor: config.initialColor,
+              }),
+              Config(TextField, {
+                margin: "0 6",
+                hidden: config.textFieldHidden,
+                plugins: [
+                  Config(BindPropertyPlugin, {
+                    bindTo: config.bindTo.extendBy(ContentPropertyNames.PROPERTIES, config.propertyName),
+                    bidirectional: true,
+                    ifUndefined: config.initialColor,
+                  }),
+                ],
+              }),
+              Config(DisplayField, {
+                margin: "0 6",
+                hidden: ColorPickerPropertyField.#calculateDisplayFieldHidden(config),
+                plugins: [
+                  Config(BindPropertyPlugin, {
+                    bindTo: config.bindTo.extendBy(ContentPropertyNames.PROPERTIES, config.propertyName),
+                    ifUndefined: config.initialColor,
+                  }),
+                ],
+              }),
+              Config(Button, {
+                text: ColorPicker_properties.ColorPickerPropertyField_reset_text,
+                handler: bind(this, () => {
+                  this.#resetColor();
+                }),
+                scale: "small",
+                ui: ButtonSkin.SIMPLE.getSkin(),
+              }),
+            ],
+            plugins: [
+              Config(SetPropertyLabelPlugin, {
+                bindTo: config.bindTo,
+                propertyName: config.propertyName,
+              }),
+              Config(BindReadOnlyPlugin, {
+                forceReadOnlyValueExpression: config.forceReadOnlyValueExpression,
+                bindTo: config.bindTo,
+              }),
+              Config(PropertyFieldPlugin, { propertyName: config.propertyName }),
+            ],
+            layout: Config(ColumnLayout),
           }),
-        }),
-      ],
-      plugins: [
-        Config(SetPropertyLabelPlugin, {
-          bindTo: config.bindTo,
-          propertyName: config.propertyName,
-        }),
-        Config(BindReadOnlyPlugin, {
-          forceReadOnlyValueExpression: config.forceReadOnlyValueExpression,
-          bindTo: config.bindTo,
-        }),
-        Config(PropertyFieldPlugin, { propertyName: config.propertyName }),
-      ],
-      layout: Config(ColumnLayout),
-    }), config))());
+          config,
+        ))(),
+    );
     this.initialColor = config.initialColor;
   }
 
@@ -119,7 +130,6 @@ class ColorPickerPropertyField extends AdvancedFieldContainer {
     }
     return result;
   }
-
 }
 
 export default ColorPickerPropertyField;
